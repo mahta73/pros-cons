@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+// import CSS file
+import './edit.css'
+
 class Edit extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +21,10 @@ class Edit extends Component {
             onSave,
         } = this.props;
         return (
-            <form onSubmit = {() => onSave(this.state.value)} style = {{display: 'inline'}}>
+            <form 
+                onSubmit = {(event) => onSave(event, this.state.value)} 
+                className = 'formField'
+            >
                 <input 
                     type = 'text' 
                     onChange = {this.handleChange}

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 // import react components
 import Add from '../add/add';
-import Edit from '../edit/edit';
 
 // import CSS file
 import './modifiableList.css';
@@ -21,7 +20,9 @@ class ModifiableList extends Component {
             title,
             placeHolder,
             lists,
-            handleClick
+            handleClick,
+            handleDelete,
+            editHandle
         } = this.props;
 
         return (
@@ -31,40 +32,20 @@ class ModifiableList extends Component {
                 <ul>
                     {
                     lists.map(
-                        (element, index) =>                                 
+                        (element, index) =>                             
                             <li 
                                 key = {index}
                             >
-
                                 <span
-                                    onClick = { () => this.setState(
-                                        prevState => {
-                                            prevState.lists.splice(index, 1, 
-                                                <Edit
-                                                    value = {element}
-                                                    onSave = {(value) => {
-                                                        this.setState(
-                                                            prevState => {
-                                                                prevState.lists.splice(index, 1, `${value}`);
-                                                                return {
-                                                                    lists: prevState.lists
-                                                                } 
-                                                            }
-                                                        );
-                                                    }}
-                                                />
-                                            );
-                                            return {
-                                                lists: prevState.lists
-                                            }
-                                        }
-                                    )}
-                                >
-                                    {element}
+                                    className = 'editableItem'
+                                    onClick = { () => editHandle(element, index, title) }
+                                >   
+                                {element}
                                 </span>
 
                                 <div 
                                     className = 'deleteItem'
+                                    onClick = {() => handleDelete(index, title)}
                                 >
                                     Remove
                                 </div>               
@@ -74,6 +55,7 @@ class ModifiableList extends Component {
                 </ul>
 
                 <Add 
+                    title = {title}
                     placeHolder = {placeHolder}
                     handleClick = {handleClick}
                 />

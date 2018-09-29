@@ -19,13 +19,19 @@ class Add extends Component {
 
     render() {
         const {
+            title,
             placeHolder,
-            handleClick
+            handleClick,
         } = this.props;
 
         return (
             <form 
                 className = 'container'
+                onSubmit = {(e) => {
+                    e.preventDefault();
+                    handleClick(this.state.value, title);
+                    this.setState({value: ''});
+                }}
             >
                 <input 
                     type = 'text'
@@ -38,7 +44,7 @@ class Add extends Component {
                 <div  
                     className = 'addButton'
                     onClick = {() => {
-                        handleClick(this.state.value);
+                        handleClick(this.state.value, title);
                         this.setState({value: ''});
                     }}
                 >

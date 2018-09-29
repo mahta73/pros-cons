@@ -6,17 +6,6 @@
     padding: 10px;
 }
 
-.editItem {
-    color:green;
-    float: right;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.editItem:hover {
-    text-decoration: underline;
-}
-
 .deleteItem {
     color:red;
     float: right;
@@ -26,4 +15,8 @@
 
 .deleteItem:hover {
     text-decoration: underline;
+}
+
+.editableItem {
+    cursor: pointer;
 }
