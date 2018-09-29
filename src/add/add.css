@@ -1,0 +1,37 @@
+.addButton {
+    display: inline-block;
+    background-color: #32132D;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-left: 2px;
+    padding: 8px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.addButton:hover {
+    background-color: white;
+    color: #32132D;
+    box-shadow: 0 0 15px #32132D;
+}
+
+.addInput {
+    padding: 10px;
+    font-size: 1.5em;
+    font-family: Raleway;
+    box-shadow: 0 0 15px #32132D;
+    border: 1px solid #32132D;
+    border-radius: 0.5em;
+    width: 80%;
+}
+
+.container {
+    display: flex;
+}
+
+.addInput:focus {
+    outline: none;
+}

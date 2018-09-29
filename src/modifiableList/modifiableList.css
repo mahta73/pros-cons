@@ -1,0 +1,29 @@
+.listContainer {
+    border: 3px solid #32132D;
+    box-shadow: 0 0 15px #32132D; 
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+}
+
+.editItem {
+    color:green;
+    float: right;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.editItem:hover {
+    text-decoration: underline;
+}
+
+.deleteItem {
+    color:red;
+    float: right;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.deleteItem:hover {
+    text-decoration: underline;
+}
