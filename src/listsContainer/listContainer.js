@@ -8,6 +8,11 @@ import './listContainer.css';
 import ModifiableList from '../modifiableList/modifiableList';
 import Edit from '../edit/edit';
 
+// urls
+const groupID = 'https://avetiq-test.firebaseapp.com/group/mahta_rezayazdi';
+const userID = 'https://avetiq-test.firebaseapp.com/user/mahta_rezayazdi';
+let apiURL = '';
+
 class ListContainer extends Component {
     constructor(props) {
         super(props);
@@ -15,53 +20,100 @@ class ListContainer extends Component {
         this.state = {
             groupId: '',
             userId: '',
+            apiURL: '',
             firstList: [],
             secondList: [],
         }
     }
 
+    
+    // Everytime a todo is added, the whole list of Pro’s & Con’s should be submitted to the server 
     handleClick = (value, title) => {
-
-        axios.get(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
-        .then(res => {    
+        axios.get(apiURL)
+        .then(res => {
             if (title === "Con's") {
-                res.data.cons.push(`${value}`);
+                if (res.data.cons === undefined ) {
+                    return axios.put(apiURL, 
+                        { 
+                            pros: res.data.pros,
+                            cons: [`${value}`],
+                        })
+                        .then(res => {
+                            this.setState({
+                                secondList: res.data.cons,
+                            });
+                        })
+                } else {
+                    res.data.cons.push(`${value}`);
+                    return axios.put(apiURL, 
+                        { 
+                            pros: res.data.pros,
+                            cons: res.data.cons,
+                        })
+                        .then(res => {
+                            this.setState({
+                                secondList: res.data.cons,
+                            });
+                        })
+                }
             } else {
-                res.data.pros.push(`${value}`);
+                if (res.data.pros === undefined ) {
+                    return axios.put(apiURL, 
+                        { 
+                            pros: [`${value}`],
+                            cons: res.data.cons,
+                        })
+                        .then(res => {
+                            this.setState({
+                                firstList: res.data.pros,
+                            });
+                        })
+                } else {
+                    res.data.pros.push(`${value}`);
+                    return axios.put(apiURL, 
+                        { 
+                            pros: res.data.pros,
+                            cons: res.data.cons,
+                        })
+                        .then(res => {
+                            this.setState({
+                                firstList: res.data.pros,
+                            });
+                        })
+                }
             }
-            
-            this.setState({
-                firstList: res.data.pros,
-                secondList: res.data.cons
-            });
-
-            return axios.put(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`, 
-            { 
-                pros: res.data.pros,
-                cons: res.data.cons,
-            })
         })
     }
     
+    // Everytime a todo is removed, the whole list of Pro’s & Con’s should be submitted to the server
     handleDelete = (index, title) => {
-        axios.get(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
+        axios.get(apiURL)
         .then(res => {    
             if (title === "Con's") {
+            
                 res.data.cons.splice(index, 1);
+                
+                this.setState({
+                    secondList: res.data.cons 
+                });
+                console.log('cons lenght', res.data.cons.length);
             } else {
-                res.data.pros.splice(index, 1);
+              
+                res.data.pros.splice(index, 1)
+
+                this.setState({
+                    firstList: res.data.pros,
+                });
+                console.log('pros lenght', res.data.pros.length);
             }
             
-            this.setState({
-                firstList: res.data.pros,
-                secondList: res.data.cons
-            });
-
-            return axios.put(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`, 
+            return axios.put(apiURL, 
             { 
                 pros: res.data.pros,
                 cons: res.data.cons,
+                testing: []
             })
+            
         })
     }
 
@@ -69,37 +121,37 @@ class ListContainer extends Component {
         this.setState(
             prevState => {
                 if (title === "Pro's") {
-                prevState.firstList.splice(index, 1, 
+                    prevState.firstList.splice(index, 1, 
                     <Edit
                         value = {element}
                         onSave = {(event, value, title) => {
                             event.preventDefault();
-                            axios.get(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
-                                    .then(res => {
-                                        res.data.pros.splice(index, 1, `${value}`);
-                                        this.setState({firstList: res.data.pros});
+                            axios.get(apiURL)
+                                .then(res => {
+                                    res.data.pros.splice(index, 1, `${value}`);
+                                    this.setState({firstList: res.data.pros});
             
-                                        return axios.put(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`, 
-                                        { 
-                                            pros: res.data.pros,
-                                            cons: res.data.cons,
-                                        })
+                                    return axios.put(apiURL, 
+                                    { 
+                                        pros: res.data.pros,
+                                        cons: res.data.cons,
                                     })
+                                })
                         }}
                     />
                 );
-                }else {
+                } else {
                     prevState.secondList.splice(index, 1, 
                         <Edit
                             value = {element}
                             onSave = {(event, value, title) => {
                                 event.preventDefault();
-                                axios.get(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
+                                axios.get(apiURL)
                                         .then(res => {
                                             res.data.cons.splice(index, 1, `${value}`);
                                             this.setState({secondList: res.data.cons});
                 
-                                            return axios.put(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`, 
+                                            return axios.put(apiURL, 
                                             { 
                                                 pros: res.data.pros,
                                                 cons: res.data.cons,
@@ -141,26 +193,30 @@ class ListContainer extends Component {
     }
 
     componentDidMount() {   
-        axios.get('https://avetiq-test.firebaseapp.com/group/mahta_rezayazdi')
+        axios.get(groupID)
         .then(res => { 
             this.setState(
             { groupId: res.data.groupId }, () => console.log(this.state.groupId)
             );
 
-            return axios.get('https://avetiq-test.firebaseapp.com/user/mahta_rezayazdi')
+            return axios.get(userID)
         })
         .then(res => {
            this.setState(
-            { userId: res.data.userId }, () => console.log(this.state.userId)   
+            { 
+                userId: res.data.userId ,
+            }, () => {
+                apiURL = `https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`;
+            }   
            ); 
 
-           return axios.get(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
+           return axios.get(apiURL)
         })
         .then(res => {
             this.setState(
             { 
                 firstList: res.data.pros,
-                secondList: res.data.cons
+                secondList: res.data.cons, 
             }, () => console.log(this.state.firstList, this.state.secondList)
             )
         })

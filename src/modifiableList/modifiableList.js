@@ -31,26 +31,31 @@ class ModifiableList extends Component {
 
                 <ul>
                     {
-                    lists.map(
-                        (element, index) =>                             
-                            <li 
-                                key = {index}
-                            >
-                                <span
-                                    className = 'editableItem'
-                                    onClick = { () => editHandle(element, index, title) }
-                                >   
-                                {element}
-                                </span>
-
-                                <div 
-                                    className = 'deleteItem'
-                                    onClick = {() => handleDelete(index, title)}
+                        (lists === undefined ? 
+                        null
+                        :
+                        lists.map(
+                            (element, index) =>                             
+                                <li 
+                                    key = {index}
                                 >
-                                    Remove
-                                </div>               
-                            </li>
+                                    <span
+                                        className = 'editableItem'
+                                        onClick = { () => editHandle(element, index, title) }
+                                    >   
+                                    {element}
+                                    </span>
+    
+                                    <div 
+                                        className = 'deleteItem'
+                                        onClick = {() => handleDelete(index, title)}
+                                    >
+                                        Remove
+                                    </div>               
+                                </li>
+                            )
                         )
+                    
                     }
                 </ul>
 
