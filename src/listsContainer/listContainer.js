@@ -82,7 +82,7 @@ class ListContainer extends Component {
                         })
                 }
             }
-        })
+        }).catch(err => console.log(err))
     }
     
     // Everytime a todo is removed, the whole list of Pro’s & Con’s should be submitted to the server
@@ -99,7 +99,7 @@ class ListContainer extends Component {
                 console.log('cons lenght', res.data.cons.length);
             } else {
               
-                res.data.pros.splice(index, 1)
+                res.data.pros.splice(index, 1);
 
                 this.setState({
                     firstList: res.data.pros,
@@ -107,13 +107,13 @@ class ListContainer extends Component {
                 console.log('pros lenght', res.data.pros.length);
             }
             
-            return axios.put(apiURL, 
-            { 
-                pros: res.data.pros,
-                cons: res.data.cons,
-                testing: []
-            })
             
+            return axios.put(apiURL, 
+                { 
+                    pros: res.data.pros,
+                    cons: res.data.cons,
+                    empty: false
+                })
         })
     }
 
@@ -147,16 +147,16 @@ class ListContainer extends Component {
                             onSave = {(event, value, title) => {
                                 event.preventDefault();
                                 axios.get(apiURL)
-                                        .then(res => {
-                                            res.data.cons.splice(index, 1, `${value}`);
-                                            this.setState({secondList: res.data.cons});
+                                    .then(res => {
+                                        res.data.cons.splice(index, 1, `${value}`);
+                                        this.setState({secondList: res.data.cons});
                 
-                                            return axios.put(apiURL, 
-                                            { 
-                                                pros: res.data.pros,
+                                        return axios.put(apiURL, 
+                                        { 
+                                            pros: res.data.pros,
                                                 cons: res.data.cons,
-                                            })
                                         })
+                                    })
                             }}
                         />
                     ); 
