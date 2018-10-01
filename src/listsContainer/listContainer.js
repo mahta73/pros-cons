@@ -29,60 +29,64 @@ class ListContainer extends Component {
     
     // Everytime a todo is added, the whole list of Pro’s & Con’s should be submitted to the server 
     handleClick = (value, title) => {
-        axios.get(apiURL)
-        .then(res => {
-            if (title === "Con's") {
-                if (res.data.cons === undefined ) {
-                    return axios.put(apiURL, 
-                        { 
-                            pros: res.data.pros,
-                            cons: [`${value}`],
-                        })
-                        .then(res => {
-                            this.setState({
-                                secondList: res.data.cons,
-                            });
-                        })
+        if (value !== '') {
+            axios.get(apiURL)
+            .then(res => {
+                if (title === "Con's") {
+                    if (res.data.cons === undefined ) {
+                        return axios.put(apiURL, 
+                            { 
+                                pros: res.data.pros,
+                                cons: [`${value}`],
+                            })
+                            .then(res => {
+                                this.setState({
+                                    secondList: res.data.cons,
+                                });
+                            })
+                    } else {
+                        res.data.cons.push(`${value}`);
+                        return axios.put(apiURL, 
+                            { 
+                                pros: res.data.pros,
+                                cons: res.data.cons,
+                            })
+                            .then(res => {
+                                this.setState({
+                                    secondList: res.data.cons,
+                                });
+                            })
+                    }
                 } else {
-                    res.data.cons.push(`${value}`);
-                    return axios.put(apiURL, 
-                        { 
-                            pros: res.data.pros,
-                            cons: res.data.cons,
-                        })
-                        .then(res => {
-                            this.setState({
-                                secondList: res.data.cons,
-                            });
-                        })
+                    if (res.data.pros === undefined ) {
+                        return axios.put(apiURL, 
+                            { 
+                                pros: [`${value}`],
+                                cons: res.data.cons,
+                            })
+                            .then(res => {
+                                this.setState({
+                                    firstList: res.data.pros,
+                                });
+                            })
+                    } else {
+                        res.data.pros.push(`${value}`);
+                        return axios.put(apiURL, 
+                            { 
+                                pros: res.data.pros,
+                                cons: res.data.cons,
+                            })
+                            .then(res => {
+                                this.setState({
+                                    firstList: res.data.pros,
+                                });
+                            })
+                    }
                 }
-            } else {
-                if (res.data.pros === undefined ) {
-                    return axios.put(apiURL, 
-                        { 
-                            pros: [`${value}`],
-                            cons: res.data.cons,
-                        })
-                        .then(res => {
-                            this.setState({
-                                firstList: res.data.pros,
-                            });
-                        })
-                } else {
-                    res.data.pros.push(`${value}`);
-                    return axios.put(apiURL, 
-                        { 
-                            pros: res.data.pros,
-                            cons: res.data.cons,
-                        })
-                        .then(res => {
-                            this.setState({
-                                firstList: res.data.pros,
-                            });
-                        })
-                }
-            }
-        }).catch(err => console.log(err))
+            }).catch(err => console.log(err))
+        } else {
+           alert('Please fill out the field');
+        }
     }
     
     // Everytime a todo is removed, the whole list of Pro’s & Con’s should be submitted to the server
