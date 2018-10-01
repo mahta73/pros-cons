@@ -128,14 +128,18 @@ class ListContainer extends Component {
                             event.preventDefault();
                             axios.get(apiURL)
                                 .then(res => {
-                                    res.data.pros.splice(index, 1, `${value}`);
-                                    this.setState({firstList: res.data.pros});
+                                    if (res.data.pros[index]  !== value) {
+                                        res.data.pros.splice(index, 1, `${value}`);
+                                        this.setState({firstList: res.data.pros});
             
-                                    return axios.put(apiURL, 
-                                    { 
-                                        pros: res.data.pros,
-                                        cons: res.data.cons,
-                                    })
+                                        return axios.put(apiURL, 
+                                        { 
+                                            pros: res.data.pros,
+                                            cons: res.data.cons,
+                                        })
+                                    } else {
+                                        this.setState({firstList: res.data.pros});
+                                    }
                                 })
                         }}
                     />
@@ -168,10 +172,11 @@ class ListContainer extends Component {
             }
         )
     }
-
+    
     render() {
         return (
             <div className = 'listsContainer'>
+            {/* hello I am just a comment*/}
                 <ModifiableList 
                     placeHolder = "Pro's"
                     title = "Pro's"
