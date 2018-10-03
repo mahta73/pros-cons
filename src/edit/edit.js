@@ -14,14 +14,16 @@ class Edit extends PureComponent {
         this.setState({value: event.target.value})
     }
 
+    onSave = (event) => {
+        event.preventDefault();
+        this.props.onSave(this.state.value, this.props.title, this.props.index);
+    }
+
     render() {
-        const {
-            onSave,
-        } = this.props;
-        
+    
         return (
             <form 
-                onSubmit = {(event) => onSave(event, this.state.value)} 
+                onSubmit = {this.onSave} 
                 className = 'formField'
             >
                 <input 
@@ -36,7 +38,9 @@ class Edit extends PureComponent {
 
 Edit.propTypes = {
     value: PropTypes.string,
-    onSave: PropTypes.func
+    onSave: PropTypes.func,
+    title: PropTypes.string,
+    index: PropTypes.number
 }
 
 export default Edit;

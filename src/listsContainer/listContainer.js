@@ -116,58 +116,67 @@ class ListContainer extends Component {
         })
     }
 
+    onSave = (value, title, index) => {
+        axios.get(apiURL)
+        .then(res => {
+            if (title === "Pro's") { 
+                if (res.data.pros[index]  !== value) {
+                    res.data.pros.splice(index, 1, `${value}`);
+                    this.setState({firstList: res.data.pros});
+
+                    return axios.put(apiURL, 
+                    { 
+                        pros: res.data.pros,
+                        cons: res.data.cons,
+                    })
+                } else {
+                    this.setState({firstList: res.data.pros});
+                }
+            } else {
+                if (res.data.cons[index]  !== value) {
+                    res.data.cons.splice(index, 1, `${value}`);
+                    this.setState({secondList: res.data.cons});
+
+                    return axios.put(apiURL, 
+                    { 
+                        pros: res.data.pros,
+                        cons: res.data.cons,
+                    })
+                } else {
+                    this.setState({secondList: res.data.cons});
+                }  
+            }
+        })   
+    }
+
     editHandle = (element, index, title) => {
         this.setState(
             prevState => {
                 if (title === "Pro's") {
                     prevState.firstList.splice(index, 1, 
-                    <Edit
-                        value = {element}
-                        onSave = {(event, value, title) => {
-                            event.preventDefault();
-                            axios.get(apiURL)
-                                .then(res => {
-                                    if (res.data.pros[index]  !== value) {
-                                        res.data.pros.splice(index, 1, `${value}`);
-                                        this.setState({firstList: res.data.pros});
-            
-                                        return axios.put(apiURL, 
-                                        { 
-                                            pros: res.data.pros,
-                                            cons: res.data.cons,
-                                        })
-                                    } else {
-                                        this.setState({firstList: res.data.pros});
-                                    }
-                                })
-                        }}
-                    />
-                );
+                        <Edit
+                            value = {element}
+                            index = {index}
+                            title = {title}
+                            onSave = {this.onSave}
+                        />
+                    );
                 } else {
                     prevState.secondList.splice(index, 1, 
                         <Edit
                             value = {element}
-                            onSave = {(event, value, title) => {
-                                event.preventDefault();
-                                axios.get(apiURL)
-                                    .then(res => {
-                                        res.data.cons.splice(index, 1, `${value}`);
-                                        this.setState({secondList: res.data.cons});
-                
-                                        return axios.put(apiURL, 
-                                        { 
-                                            pros: res.data.pros,
-                                                cons: res.data.cons,
-                                        })
-                                    })
-                            }}
+                            index = {index}
+                            title = {title}
+                            onSave = {this.onSave}
                         />
-                    ); 
+                    );
                 }
+
                 return {
                     firstList: prevState.firstList,
                     secondList: prevState.secondList
                 }
+        
             }
         )
     }
