@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 // import react components
-import Add from '../add/add';
+import Add from './add';
+import Remove from './remove';
+import Element from './element';
 
 // import CSS file
 import './modifiableList.css';
@@ -36,26 +38,25 @@ class ModifiableList extends Component {
                                 <li 
                                     key = {index}
                                 >
-                                    <span
-                                        className = 'editableItem'
-                                        onClick = { () => editHandle(element, index, title) }
-                                    >   
-                                    {element}
-                                    </span>
+                                    <Element
+                                        element = {element} 
+                                        index = {index}
+                                        title = {title}
+                                        editHandle = {editHandle}
+                                    />
     
-                                    <div 
-                                        className = 'deleteItem'
-                                        onClick = {() => handleDelete(index, title)}
-                                    >
-                                        Remove
-                                    </div>               
+                                    <Remove 
+                                        handleDelete = {handleDelete}
+                                        index = {index}
+                                        title = {title}
+                                    />  
+
                                 </li>
                             )
-                        )
-                    
+                        )             
                     }
                 </ul>
-
+                
                 <Add 
                     title = {title}
                     handleClick = {handleClick}
