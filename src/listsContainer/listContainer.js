@@ -116,35 +116,28 @@ class ListContainer extends Component {
         })
     }
 
+    handleSave = (mainArr, secondArr, index, value) => {
+        if (mainArr[index]  !== value) {
+            mainArr.splice(index, 1, `${value}`);
+            this.setState({firstList:mainArr});
+
+            return axios.put(apiURL, 
+            { 
+                pros: mainArr,
+                cons: secondArr,
+            })
+        } else {
+            this.setState({firstList: mainArr});
+        }
+    }
+
     onSave = (value, title, index) => {
         axios.get(apiURL)
         .then(res => {
             if (title === "Pro's") { 
-                if (res.data.pros[index]  !== value) {
-                    res.data.pros.splice(index, 1, `${value}`);
-                    this.setState({firstList: res.data.pros});
-
-                    return axios.put(apiURL, 
-                    { 
-                        pros: res.data.pros,
-                        cons: res.data.cons,
-                    })
-                } else {
-                    this.setState({firstList: res.data.pros});
-                }
+                this.handleSave(res.data.pros, res.data.cons, index, value);
             } else {
-                if (res.data.cons[index]  !== value) {
-                    res.data.cons.splice(index, 1, `${value}`);
-                    this.setState({secondList: res.data.cons});
-
-                    return axios.put(apiURL, 
-                    { 
-                        pros: res.data.pros,
-                        cons: res.data.cons,
-                    })
-                } else {
-                    this.setState({secondList: res.data.cons});
-                }  
+                this.handleSave(res.data.cons, res.data.pros, index, value);
             }
         })   
     }
