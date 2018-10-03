@@ -1,52 +1,46 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 
 // import CSS file
 import './add.css';
 
-class Add extends Component {
+class Add extends PureComponent {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value: ''
-        }
+    state = {
+        value: '',
     }
 
     handleChange = (event) => {
         this.setState({value: event.target.value});
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.handleClick(this.state.value, this.props.title);
+        this.setState({value: ''});
+    }
+
     render() {
         const {
-            title,
-            placeHolder,
-            handleClick,
+            title
         } = this.props;
-
+        
         return (
             <form 
                 className = 'container'
-                onSubmit = {(e) => {
-                    e.preventDefault();
-                    handleClick(this.state.value, title);
-                    this.setState({value: ''});
-                }}
+                onSubmit = {this.handleSubmit}
             >
                 <input 
                     type = 'text'
                     className = 'addInput' 
-                    placeholder = {`New ${placeHolder}`}
+                    placeholder = {`New ${title}`}
                     value = {this.state.value}
                     onChange = {this.handleChange}
                 />
 
                 <div  
                     className = 'addButton'
-                    onClick = {() => {
-                        handleClick(this.state.value, title);
-                        this.setState({value: ''});
-                    }}
+                    onClick = {this.handleSubmit}
                 >
                     +
                 </div>
@@ -55,4 +49,8 @@ class Add extends Component {
     }
 }
 
+Add.propTypes = {
+    handleClick: PropTypes.func,
+    title: PropTypes.string,
+}
 export default Add;

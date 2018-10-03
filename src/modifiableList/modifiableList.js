@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 // import react components
 import Add from '../add/add';
@@ -7,18 +8,14 @@ import Add from '../add/add';
 import './modifiableList.css';
 
 class ModifiableList extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            value: ''
-        }
+    state = {
+        value: ''
     }
 
     render() {
         const {
             title,
-            placeHolder,
             lists,
             handleClick,
             handleDelete,
@@ -61,12 +58,19 @@ class ModifiableList extends Component {
 
                 <Add 
                     title = {title}
-                    placeHolder = {placeHolder}
                     handleClick = {handleClick}
                 />
             </div>
         )
     }
+}
+
+ModifiableList.propTypes = {
+    title: PropTypes.string,
+    lists: PropTypes.array,
+    handleClick: PropTypes.func,
+    handleDelete: PropTypes.func,
+    editHandle: PropTypes.func
 }
 
 export default ModifiableList;

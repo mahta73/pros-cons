@@ -1,15 +1,13 @@
-import React, { Component, Fragment} from 'react';
+import React, { PureComponent } from 'react';
 
 import ShouldI from './shouldI/shouldI';
 
 import './App.css';
 
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
-      <Fragment>
-        <ShouldI />
-      </Fragment>
+      <ShouldI />
     );
   }
 }

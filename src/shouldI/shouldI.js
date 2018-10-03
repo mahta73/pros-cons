@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 
 // import react components
 import ListContainer from '../listsContainer/listContainer';
@@ -7,7 +7,9 @@ import ListContainer from '../listsContainer/listContainer';
 import './shouldI.css';
 
 // stateless component
-const ShouldI = () => 
+class ShouldI extends PureComponent {
+    render() {
+        return (
             <Fragment>
                 <h1 className = 'shouldI'
                 >
@@ -15,5 +17,8 @@ const ShouldI = () =>
                 </h1>
                 <ListContainer />
             </Fragment>
+        )
+    }
+}
 
 export default ShouldI;

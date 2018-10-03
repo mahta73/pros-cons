@@ -1,15 +1,13 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 
 // import CSS file
 import './edit.css'
 
-class Edit extends Component {
-    constructor(props) {
-        super(props);
+class Edit extends PureComponent {
 
-        this.state = {
-            value: this.props.value
-        }
+    state = {
+        value: this.props.value
     }
 
     handleChange = (event) => {
@@ -20,6 +18,7 @@ class Edit extends Component {
         const {
             onSave,
         } = this.props;
+        
         return (
             <form 
                 onSubmit = {(event) => onSave(event, this.state.value)} 
@@ -33,6 +32,11 @@ class Edit extends Component {
             </form>
         )
     }
+}
+
+Edit.propTypes = {
+    value: PropTypes.string,
+    onSave: PropTypes.func
 }
 
 export default Edit;

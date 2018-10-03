@@ -14,19 +14,14 @@ const userID = 'https://avetiq-test.firebaseapp.com/user/mahta_rezayazdi';
 let apiURL = '';
 
 class ListContainer extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            groupId: '',
-            userId: '',
-            apiURL: '',
-            firstList: [],
-            secondList: [],
-        }
+    state = {
+        groupId: '',
+        userId: '',
+        firstList: [],
+        secondList: [],
     }
-
-    
+   
     // Everytime a todo is added, the whole list of Pro’s & Con’s should be submitted to the server 
     handleClick = (value, title) => {
         if (value !== '') {
@@ -180,9 +175,7 @@ class ListContainer extends Component {
     render() {
         return (
             <div className = 'listsContainer'>
-            {/* hello I am just a comment*/}
                 <ModifiableList 
-                    placeHolder = "Pro's"
                     title = "Pro's"
                     lists = {this.state.firstList}
                     handleClick = {this.handleClick}
@@ -190,7 +183,6 @@ class ListContainer extends Component {
                     editHandle = {this.editHandle}
                 />
                 <ModifiableList 
-                    placeHolder = "Con's"
                     title = "Con's"
                     lists = {this.state.secondList} 
                     handleClick = {this.handleClick}
