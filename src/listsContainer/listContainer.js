@@ -23,6 +23,10 @@ class ListContainer extends Component {
     }
    
     // Everytime a todo is added, the whole list of Pro’s & Con’s should be submitted to the server 
+    handleAdd = () => {
+        
+    }
+    
     handleClick = (value, title) => {
         if (value !== '') {
             axios.get(apiURL)
@@ -116,16 +120,27 @@ class ListContainer extends Component {
         })
     }
 
-    handleSave = (mainArr, secondArr, index, value) => {
+    handleSave = (mainArr, secondArr, index, value, title) => {
         if (mainArr[index]  !== value) {
             mainArr.splice(index, 1, `${value}`);
-            this.setState({firstList:mainArr});
+            if (title === "Pro's") {
+                this.setState({firstList:mainArr});
 
-            return axios.put(apiURL, 
-            { 
-                pros: mainArr,
-                cons: secondArr,
-            })
+                return axios.put(apiURL, 
+                { 
+                    pros: mainArr,
+                    cons: secondArr,
+                })
+            } else {
+                this.setState({secondList:mainArr});
+
+                return axios.put(apiURL, 
+                { 
+                    pros: secondArr,
+                    cons: mainArr,
+                })
+            }
+            
         } else {
             this.setState({firstList: mainArr});
         }
@@ -135,9 +150,9 @@ class ListContainer extends Component {
         axios.get(apiURL)
         .then(res => {
             if (title === "Pro's") { 
-                this.handleSave(res.data.pros, res.data.cons, index, value);
+                this.handleSave(res.data.pros, res.data.cons, index, value, title);
             } else {
-                this.handleSave(res.data.cons, res.data.pros, index, value);
+                this.handleSave(res.data.cons, res.data.pros, index, value, title);
             }
         })   
     }
