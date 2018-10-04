@@ -37,10 +37,10 @@ class Edit extends PureComponent {
 }
 
 Edit.propTypes = {
-    value: PropTypes.string,
-    onSave: PropTypes.func,
-    title: PropTypes.string,
-    index: PropTypes.number
+    value: PropTypes.string.isRequired,
+    onSave: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired
 }
 
 export default Edit;

@@ -22,10 +22,10 @@ class Element extends Component {
 }
 
 Element.propTypes = {
-    editHandle: PropTypes.func,
-    element: PropTypes.string,
-    index: PropTypes.number,
-    title: PropTypes.string
+    editHandle: PropTypes.func.isRequired,
+    element: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired
 }
 
 export default Element;

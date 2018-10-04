@@ -121,30 +121,29 @@ class ListContainer extends Component {
     }
 
     handleSave = (mainArr, secondArr, index, value, title) => {
-        if (mainArr[index]  !== value) {
-            mainArr.splice(index, 1, `${value}`);
-            if (title === "Pro's") {
-                this.setState({firstList:mainArr});
+                mainArr.splice(index, 1, `${value}`);
+                if (title === "Pro's") {
+                
+                    this.setState({firstList:mainArr});
 
-                return axios.put(apiURL, 
-                { 
-                    pros: mainArr,
-                    cons: secondArr,
-                })
-            } else {
-                this.setState({secondList:mainArr});
+                    return axios.put(apiURL, 
+                    { 
+                        pros: mainArr,
+                        cons: secondArr,
+                    })
+                
+                } else {
+                    
+                    this.setState({secondList:mainArr});
 
-                return axios.put(apiURL, 
-                { 
-                    pros: secondArr,
-                    cons: mainArr,
-                })
-            }
-            
-        } else {
-            this.setState({firstList: mainArr});
+                    return axios.put(apiURL, 
+                    { 
+                        pros: secondArr,
+                        cons: mainArr,
+                    })
+                }        
         }
-    }
+  
 
     onSave = (value, title, index) => {
         axios.get(apiURL)
@@ -158,6 +157,7 @@ class ListContainer extends Component {
     }
 
     editHandle = (element, index, title) => {
+        console.log('element',element,  typeof element);
         this.setState(
             prevState => {
                 if (title === "Pro's") {

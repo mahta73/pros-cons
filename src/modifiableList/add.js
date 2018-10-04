@@ -50,7 +50,7 @@ class Add extends PureComponent {
 }
 
 Add.propTypes = {
-    handleClick: PropTypes.func,
-    title: PropTypes.string,
+    handleClick: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
 }
 export default Add;

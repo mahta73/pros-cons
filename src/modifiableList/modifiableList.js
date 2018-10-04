@@ -67,11 +67,11 @@ class ModifiableList extends Component {
 }
 
 ModifiableList.propTypes = {
-    title: PropTypes.string,
-    lists: PropTypes.array,
-    handleClick: PropTypes.func,
-    handleDelete: PropTypes.func,
-    editHandle: PropTypes.func
+    title: PropTypes.string.isRequired,
+    lists: PropTypes.array.isRequired,
+    handleClick: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    editHandle: PropTypes.func.isRequired
 }
 
 export default ModifiableList;
