@@ -6,7 +6,6 @@ import './listContainer.css';
 
 //import react components 
 import ModifiableList from '../modifiableList/modifiableList';
-import Edit from '../edit/edit';
 
 // urls
 const groupID = 'https://avetiq-test.firebaseapp.com/group/mahta_rezayazdi';
@@ -20,6 +19,7 @@ class ListContainer extends Component {
         userId: '',
         firstList: [],
         secondList: [],
+        Edit: null,
     }
    
     // Everytime a todo is added, the whole list of Pro’s & Con’s should be submitted to the server 
@@ -157,51 +157,62 @@ class ListContainer extends Component {
     }
 
     editHandle = (element, index, title) => {
-        console.log('element',element,  typeof element);
-        this.setState(
-            prevState => {
-                if (title === "Pro's") {
-                    prevState.firstList.splice(index, 1, 
-                        <Edit
-                            value = {element}
-                            index = {index}
-                            title = {title}
-                            onSave = {this.onSave}
-                        />
-                    );
-                } else {
-                    prevState.secondList.splice(index, 1, 
-                        <Edit
-                            value = {element}
-                            index = {index}
-                            title = {title}
-                            onSave = {this.onSave}
-                        />
-                    );
-                }
-
-                return {
-                    firstList: prevState.firstList,
-                    secondList: prevState.secondList
-                }
+        import('../edit/edit')
+        .then(mod => {
+            this.setState( () => ({
+                    Edit: mod.default
+            }), () => {
+                this.setState(
+                    prevState => {
+                        if (title === "Pro's") {
+                            prevState.firstList.splice(index, 1, 
+                                <this.state.Edit
+                                    value = {element}
+                                    index = {index}
+                                    title = {title}
+                                    onSave = {this.onSave}
+                                />
+                            );
+                        } else {
+                            prevState.secondList.splice(index, 1, 
+                                <this.state.Edit
+                                    value = {element}
+                                    index = {index}
+                                    title = {title}
+                                    onSave = {this.onSave}
+                                />
+                            );
+                        }
         
+                        return {
+                            firstList: prevState.firstList,
+                            secondList: prevState.secondList
+                        }
+                
+                    }
+                )
             }
-        )
+            )
+        })
     }
     
     render() {
+        const {
+            firstList, 
+            secondList
+        } = this.state;
         return (
             <div className = 'listsContainer'>
                 <ModifiableList 
                     title = "Pro's"
-                    lists = {this.state.firstList}
+                    lists = {firstList}
                     handleClick = {this.handleClick}
                     handleDelete = {this.handleDelete}
                     editHandle = {this.editHandle}
                 />
                 <ModifiableList 
                     title = "Con's"
-                    lists = {this.state.secondList} 
+                    lists = {secondList} 
                     handleClick = {this.handleClick}
                     handleDelete = {this.handleDelete}
                     editHandle = {this.editHandle}

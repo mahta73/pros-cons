@@ -25,6 +25,9 @@ class Add extends PureComponent {
             title
         } = this.props;
         
+        const {
+            value
+        } = this.state;
         return (
             <form 
                 className = 'container'
@@ -34,7 +37,7 @@ class Add extends PureComponent {
                     type = 'text'
                     className = 'addInput' 
                     placeholder = {`New ${title}`}
-                    value = {this.state.value}
+                    value = {value}
                     onChange = {this.handleChange}
                 />
 

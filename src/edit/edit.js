@@ -20,6 +20,9 @@ class Edit extends PureComponent {
     }
 
     render() {
+        const {
+            value
+        } = this.state;
     
         return (
             <form 
@@ -29,7 +32,7 @@ class Edit extends PureComponent {
                 <input 
                     type = 'text' 
                     onChange = {this.handleChange}
-                    value = {this.state.value}
+                    value = {value}
                 />
             </form>
         )

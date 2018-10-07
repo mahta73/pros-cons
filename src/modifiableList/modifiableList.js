@@ -11,10 +11,6 @@ import './modifiableList.css';
 
 class ModifiableList extends Component {
 
-    state = {
-        value: ''
-    }
-
     render() {
         const {
             title,
