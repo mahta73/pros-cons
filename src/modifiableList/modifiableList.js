@@ -15,9 +15,6 @@ class ModifiableList extends Component {
         const {
             title,
             lists,
-            handleClick,
-            handleDelete,
-            editHandle
         } = this.props;
 
         return (
@@ -38,11 +35,9 @@ class ModifiableList extends Component {
                                         element = {element} 
                                         index = {index}
                                         title = {title}
-                                        editHandle = {editHandle}
                                     />
     
                                     <Remove 
-                                        handleDelete = {handleDelete}
                                         index = {index}
                                         title = {title}
                                     />  
@@ -55,7 +50,6 @@ class ModifiableList extends Component {
                 
                 <Add 
                     title = {title}
-                    handleClick = {handleClick}
                 />
             </div>
         )
@@ -64,10 +58,7 @@ class ModifiableList extends Component {
 
 ModifiableList.propTypes = {
     title: PropTypes.string.isRequired,
-    lists: PropTypes.array.isRequired,
-    handleClick: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    editHandle: PropTypes.func.isRequired
+    lists: PropTypes.array,
 }
 
 export default ModifiableList;

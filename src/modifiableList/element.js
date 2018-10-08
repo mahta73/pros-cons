@@ -4,25 +4,29 @@ import PropTypes from 'prop-types';
 // import CSS file
 import './modifiableList.css';
 
-class Element extends Component {
-    editHandle = () => {
-        this.props.editHandle(this.props.element, this.props.index, this.props.title);
-    }
+// import the context provider and consumer
+import { ContextCunsomer } from '../context/context';
 
+class Element extends Component {
+    
     render() {
         return (
-            <span
-                className = 'editableItem'
-                onClick = {this.editHandle}
-            >   
-                {this.props.element}
-            </span>
+            <ContextCunsomer>
+                {
+                    data =>
+                    <span
+                        className = 'editableItem'
+                        onClick = {() => data.editHandle(this.props.element, this.props.index, this.props.title)}
+                    >   
+                        {this.props.element}
+                    </span> 
+                }
+            </ContextCunsomer>
         )
     }
 }
 
 Element.propTypes = {
-    editHandle: PropTypes.func.isRequired,
     element: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired

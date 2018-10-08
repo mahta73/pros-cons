@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+// import the context provider and consumer
+import { ContextCunsomer } from '../context/context';
+
 // import CSS file
 import './add.css';
 
@@ -14,12 +17,6 @@ class Add extends PureComponent {
         this.setState({value: event.target.value});
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.handleClick(this.state.value, this.props.title);
-        this.setState({value: ''});
-    }
-
     render() {
         const {
             title
@@ -29,25 +26,38 @@ class Add extends PureComponent {
             value
         } = this.state;
         return (
-            <form 
-                className = 'container'
-                onSubmit = {this.handleSubmit}
-            >
-                <input 
-                    type = 'text'
-                    className = 'addInput' 
-                    placeholder = {`New ${title}`}
-                    value = {value}
-                    onChange = {this.handleChange}
-                />
+            <ContextCunsomer>
+                {
+                    data => 
+                        <form 
+                        className = 'container'
+                        onSubmit = {(e) => {
+                            e.preventDefault();
+                            data.handleClick(this.state.value, this.props.title);
+                            this.setState({value: ''});
+                        }}
+                        >
+                            <input 
+                                type = 'text'
+                                className = 'addInput' 
+                                placeholder = {`New ${title}`}
+                                value = {value}
+                                onChange = {this.handleChange}
+                            />
 
-                <div  
-                    className = 'addButton'
-                    onClick = {this.handleSubmit}
-                >
-                    +
-                </div>
-            </form>
+                            <div  
+                                className = 'addButton'
+                                onClick = {(e) => {
+                                    e.preventDefault();
+                                    data.handleClick(this.state.value, this.props.title);
+                                    this.setState({value: ''});
+                                }}
+                            >
+                                +
+                            </div>
+                        </form>
+                }
+            </ContextCunsomer>
         )
     }
 }

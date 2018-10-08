@@ -4,19 +4,22 @@ import axios from 'axios';
 // import CSS file
 import './listContainer.css';
 
+// import the context provider and consumer
+import { ContextProvider } from '../context/context';
+
 //import react components 
 import ModifiableList from '../modifiableList/modifiableList';
 
 // urls
 const groupID = 'https://avetiq-test.firebaseapp.com/group/mahta_rezayazdi';
 const userID = 'https://avetiq-test.firebaseapp.com/user/mahta_rezayazdi';
-let apiURL = '';
 
 class ListContainer extends Component {
 
     state = {
         groupId: '',
         userId: '',
+        mainUrl: '',
         firstList: [],
         secondList: [],
         Edit: null,
@@ -29,11 +32,11 @@ class ListContainer extends Component {
     
     handleClick = (value, title) => {
         if (value !== '') {
-            axios.get(apiURL)
+            axios.get(this.state.mainUrl)
             .then(res => {
                 if (title === "Con's") {
                     if (res.data.cons === undefined ) {
-                        return axios.put(apiURL, 
+                        return axios.put(this.state.mainUrl, 
                             { 
                                 pros: res.data.pros,
                                 cons: [`${value}`],
@@ -45,7 +48,7 @@ class ListContainer extends Component {
                             })
                     } else {
                         res.data.cons.push(`${value}`);
-                        return axios.put(apiURL, 
+                        return axios.put(this.state.mainUrl, 
                             { 
                                 pros: res.data.pros,
                                 cons: res.data.cons,
@@ -58,7 +61,7 @@ class ListContainer extends Component {
                     }
                 } else {
                     if (res.data.pros === undefined ) {
-                        return axios.put(apiURL, 
+                        return axios.put(this.state.mainUrl, 
                             { 
                                 pros: [`${value}`],
                                 cons: res.data.cons,
@@ -70,7 +73,7 @@ class ListContainer extends Component {
                             })
                     } else {
                         res.data.pros.push(`${value}`);
-                        return axios.put(apiURL, 
+                        return axios.put(this.state.mainUrl, 
                             { 
                                 pros: res.data.pros,
                                 cons: res.data.cons,
@@ -90,7 +93,7 @@ class ListContainer extends Component {
     
     // Everytime a todo is removed, the whole list of Pro’s & Con’s should be submitted to the server
     handleDelete = (index, title) => {
-        axios.get(apiURL)
+        axios.get(this.state.mainUrl)
         .then(res => {    
             if (title === "Con's") {
             
@@ -111,7 +114,7 @@ class ListContainer extends Component {
             }
             
             
-            return axios.put(apiURL, 
+            return axios.put(this.state.mainUrl, 
                 { 
                     pros: res.data.pros,
                     cons: res.data.cons,
@@ -126,7 +129,7 @@ class ListContainer extends Component {
                 
                     this.setState({firstList:mainArr});
 
-                    return axios.put(apiURL, 
+                    return axios.put(this.state.mainUrl, 
                     { 
                         pros: mainArr,
                         cons: secondArr,
@@ -136,7 +139,7 @@ class ListContainer extends Component {
                     
                     this.setState({secondList:mainArr});
 
-                    return axios.put(apiURL, 
+                    return axios.put(this.state.mainUrl, 
                     { 
                         pros: secondArr,
                         cons: mainArr,
@@ -146,7 +149,7 @@ class ListContainer extends Component {
   
 
     onSave = (value, title, index) => {
-        axios.get(apiURL)
+        axios.get(this.state.mainUrl)
         .then(res => {
             if (title === "Pro's") { 
                 this.handleSave(res.data.pros, res.data.cons, index, value, title);
@@ -197,86 +200,57 @@ class ListContainer extends Component {
     }
     
     render() {
+
         const {
             firstList, 
             secondList
         } = this.state;
+
         return (
-            <div className = 'listsContainer'>
-                <ModifiableList 
-                    title = "Pro's"
-                    lists = {firstList}
-                    handleClick = {this.handleClick}
-                    handleDelete = {this.handleDelete}
-                    editHandle = {this.editHandle}
-                />
-                <ModifiableList 
-                    title = "Con's"
-                    lists = {secondList} 
-                    handleClick = {this.handleClick}
-                    handleDelete = {this.handleDelete}
-                    editHandle = {this.editHandle}
-                />  
-            </div>
+            <ContextProvider value = {{
+                handleClick: this.handleClick,
+                handleDelete: this.handleDelete,
+                editHandle: this.editHandle
+            }}>
+                <div className = 'listsContainer'>
+                    <ModifiableList 
+                        title = "Pro's"
+                        lists = {firstList}
+                    />
+                    <ModifiableList 
+                        title = "Con's"
+                        lists = {secondList} 
+                    />  
+                </div>
+            </ContextProvider>
         )
     }
 
     componentDidMount() {   
         axios.get(groupID)
         .then(res => { 
-            this.setState(
-            { groupId: res.data.groupId }, () => console.log(this.state.groupId)
-            );
+            this.setState({ 
+                groupId: res.data.groupId 
+            });
 
             return axios.get(userID)
         })
         .then(res => {
-           this.setState(
-            { 
+           this.setState({ 
                 userId: res.data.userId ,
-            }, () => {
-                apiURL = `https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`;
-            }   
-           ); 
+                mainUrl: `https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${res.data.userId}`
+            });
 
-           return axios.get(apiURL)
+           return axios.get(this.state.mainUrl)
         })
         .then(res => {
             this.setState(
-            { 
-                firstList: res.data.pros,
-                secondList: res.data.cons, 
-            }, () => console.log(this.state.firstList, this.state.secondList)
-            )
-        })
-
-        /*
-            USING FETCH API
-
-            fetch('https://avetiq-test.firebaseapp.com/group/mahta_rezayazdi')
-            .then(response => response.json())
-            .then(data => { 
-                this.setState({
-                    groupId: data.groupId
-                });
-                return fetch('https://avetiq-test.firebaseapp.com/user/mahta_rezayazdi')
+                { 
+                    firstList: res.data.pros,
+                    secondList: res.data.cons, 
                 }
             )
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    userId: data.userId
-                });
-                return fetch(`https://avetiq-test.firebaseapp.com/proscons/group/${this.state.groupId}/user/${this.state.userId}`)
-            })
-            .then(response => response.json())
-            .then(data => this.setState({
-                firstList: data.pros,
-                secondList: data.cons,
-                }, () => console.log(this.state.firstList, this.state.secondList)
-            ))
-            .catch(err => console.log(err));
-        */
+        })
     }
 }
 

@@ -4,26 +4,32 @@ import PropTypes from 'prop-types';
 // import CSS file
 import './modifiableList';
 
-class Remove extends PureComponent {
-    handleDelete = () => {
-        this.props.handleDelete(this.props.index, this.props.title);
-    }
+// import the context provider and consumer
+import { ContextCunsomer } from '../context/context';
 
+class Remove extends PureComponent {
+    
     render() {
         
         return (
-            <div 
-                className = 'deleteItem'
-                onClick = {this.handleDelete}
-            >
-                Remove
-            </div> 
+            <ContextCunsomer>
+                {
+                    (data) => 
+                        <div 
+                            className = 'deleteItem'
+                            onClick = {() => data.handleDelete(this.props.index, this.props.title)}
+                        >
+                            Remove
+                        </div> 
+                    
+                }
+            
+            </ContextCunsomer>
         )
     }
 }
 
 Remove.propTypes = {
-    handleDelete: PropTypes.func,
     index: PropTypes.number,
     title: PropTypes.string
 }
